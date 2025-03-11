@@ -1,0 +1,47 @@
+import { Text } from "react-native";
+import { MaterialIcons } from "@expo/vector-icons";
+import { NavigationContainer } from "@react-navigation/native";
+import { HomeScreen } from "./screens/HomeScreen";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import RacesScreen from "./screens/RacesScreen";
+
+const routeIcons: Record<string, string> = {
+  "Search": "search",
+  "Tickets": "confirmation-number",
+  "Contacts": "headset-mic",
+  "Profile": "person"
+}
+
+const Tab = createBottomTabNavigator();
+const Stack = createNativeStackNavigator();
+const SearchScreens = () => (
+  <Stack.Navigator>
+    <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
+    <Stack.Screen name="Races" component={RacesScreen} options={{ headerTitle: "Рейси" }} />
+  </Stack.Navigator>
+)
+
+function App() {
+  return (
+    <NavigationContainer>
+      <Tab.Navigator
+        screenOptions={({route}) => ({
+          tabBarIcon: ({ color, size }) => {
+            return <MaterialIcons name={routeIcons[route.name] ?? "question-mark"} size={size} color={color} />
+          },
+          tabBarActiveTintColor: "rgb(249, 37, 63)",
+          tabBarInactiveTintColor: "gray",
+          headerShown: false
+        })}
+      >
+        <Tab.Screen name="Search" component={SearchScreens} />
+        <Tab.Screen name="Tickets" component={() => <Text>todo tickets</Text>} />
+        <Tab.Screen name="Contacts" component={() => <Text>todo contacts</Text>} />
+        <Tab.Screen name="Profile" component={() => <Text>todo profile</Text>} />
+      </Tab.Navigator>
+    </NavigationContainer>
+  );
+}
+
+export default App;
