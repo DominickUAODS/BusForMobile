@@ -29,15 +29,14 @@ export { HomeScreen };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "lightblue"
+    justifyContent: "center"
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.4)"
   },
   bgImage: {
-    gap: 50,
+    gap: scale(50),
     alignItems: "center",
     paddingTop: Platform.select({
       ios: 0,
