@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import RacesScreen from "./screens/RacesScreen";
 
-const routeIcons: Record<string, string> = {
+const routeIcons: any = {
   "Search": "search",
   "Tickets": "confirmation-number",
   "Contacts": "headset-mic",

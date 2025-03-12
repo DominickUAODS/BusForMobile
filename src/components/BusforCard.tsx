@@ -1,7 +1,7 @@
 import { Alert, StyleSheet, Text, TouchableOpacity, useWindowDimensions, View } from "react-native";
 import { scale } from "react-native-size-matters";
 
-type Race = {
+type CardParams = {
     timeFrom: Date;
     timeTo: Date;
     locationFrom: string;
@@ -10,7 +10,7 @@ type Race = {
     places: number
 }
 
-function BusforCard({timeFrom, timeTo, locationFrom, locationTo, cost, places, shouldBePrinted=false}: Race & { shouldBePrinted?: boolean }): React.ReactElement {
+function BusforCard({timeFrom, timeTo, locationFrom, locationTo, cost, places}: CardParams): React.ReactElement {
     timeFrom = new Date(timeFrom);
     timeTo = new Date(timeTo);
     
@@ -18,9 +18,9 @@ function BusforCard({timeFrom, timeTo, locationFrom, locationTo, cost, places, s
     const duration = new Date(timeTo.getTime() - timeFrom.getTime());
     
     return (width < height) ?
-        <View style={!shouldBePrinted && {marginTop: scale(-15)}}>
-            {!shouldBePrinted && <Text style={styles.textNoPrint}>Можна не роздруковувати</Text>}
-            <View style={[styles.card, {width: width - 20}, shouldBePrinted ? styles.cardPrint : styles.cardNoPrint, (width > height) ? {height: scale(80)} : {height: scale(150)}]}>
+        <View style={styles.container}>
+            <Text style={styles.textNoPrint}>Можна не роздруковувати</Text>
+            <View style={[styles.card, (width > height) ? styles.cardHorizontal : styles.cardVertical]}>
                 <View style={styles.cardColumn}>
                     <View style={styles.durationRow}>
                         <Text style={styles.timeDisplay}>{timeFrom.getHours()}:{timeFrom.getMinutes().toString().padStart(2, "0")}</Text>
@@ -44,9 +44,9 @@ function BusforCard({timeFrom, timeTo, locationFrom, locationTo, cost, places, s
             </View>
         </View>
         :
-        <View style={!shouldBePrinted && {marginTop: scale(-15)}}>
-            {!shouldBePrinted && <Text style={styles.textNoPrint}>Можна не роздруковувати</Text>}
-            <View style={[styles.card, {width: width - 20}, shouldBePrinted ? styles.cardPrint : styles.cardNoPrint]}>
+        <View style={styles.container}>
+            <Text style={styles.textNoPrint}>Можна не роздруковувати</Text>
+            <View style={styles.card}>
                 <View style={styles.cardColumn}>
                     <View style={styles.durationRow}>
                         <Text style={styles.timeDisplay}>{timeFrom.getHours()}:{timeFrom.getMinutes().toString().padStart(2, "0")}</Text>
@@ -59,14 +59,14 @@ function BusforCard({timeFrom, timeTo, locationFrom, locationTo, cost, places, s
                     <Text style={styles.locationDisplay}>{locationTo}</Text>
                 </View>
                 <View style={styles.cardColumn}>
-                    <Text style={[styles.placesDisplay, (width > height) && {textAlign: "center", fontSize: scale(16)}]}>{places} місць</Text>
+                    <Text style={[styles.placesDisplay, (width > height) && styles.placesDisplayHorizontal]}>{places} місць</Text>
                     <TouchableOpacity
                         style={styles.costDisplay}
                         onPress={() => {
                             Alert.alert("Not implemented", "Тут буде бронювання квитка");
                         }}
                     >
-                        <Text style={[styles.costDisplay, (width > height) && {fontSize: scale(20)}]}>{cost} грн</Text>
+                        <Text style={[styles.costDisplay, (width > height) && styles.costDisplayHorizontal]}>{cost} грн</Text>
                     </TouchableOpacity>
                 </View>
             </View>
@@ -74,6 +74,9 @@ function BusforCard({timeFrom, timeTo, locationFrom, locationTo, cost, places, s
     };
 
 const styles = StyleSheet.create({
+    container: {
+        marginTop: scale(-15)
+    },
     card: {
         backgroundColor: "white",
         paddingLeft: scale(20),
@@ -83,16 +86,17 @@ const styles = StyleSheet.create({
         justifyContent: "space-between",
         overflow: "hidden",
         borderWidth: scale(2),
-        borderRadius: scale(10)
+        borderRadius: scale(10),
+        borderColor: "#fc8605"
+    },
+    cardHorizontal: {
+        height: scale(80)
+    },
+    cardVertical: {
+        height: scale(150)
     },
     cardColumn: {
         flex: 1
-    },
-    cardPrint: {
-        borderColor: "#f9253e"
-    },
-    cardNoPrint: {
-        borderColor: "#fc8605"
     },
     textNoPrint: {
         backgroundColor: "#fc8605",
@@ -130,6 +134,10 @@ const styles = StyleSheet.create({
         flexGrow: 1,
         fontSize: scale(14)
     },
+    placesDisplayHorizontal: {
+        textAlign: "center",
+        fontSize: scale(16)
+    },
     costDisplay: {
         backgroundColor: "#f9253e",
         color: "white",
@@ -138,7 +146,10 @@ const styles = StyleSheet.create({
         textAlignVertical: "center",
         flexGrow: 1,
         borderTopLeftRadius: scale(10)
+    },
+    costDisplayHorizontal: {
+        fontSize: scale(20)
     }
 });
 
-export { Race, BusforCard };
+export { BusforCard };
