@@ -24,7 +24,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
     const navigation = useNavigation<any>();
 
     const onSubmit = () => {
-        navigation.navigate("Races", {city_from, city_to, date, passengers});
+        navigation.navigate("Races", {city_from, city_to, date: date.toISOString(), passengers});
     }
 
     const fetchCities = async () => {

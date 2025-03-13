@@ -1,4 +1,4 @@
-import { SafeAreaView, View, StyleSheet, Platform, StatusBar, useWindowDimensions, ImageBackground } from "react-native";
+import { SafeAreaView, View, StyleSheet, Platform, useWindowDimensions, ImageBackground } from "react-native";
 import { scale } from "react-native-size-matters";
 import { SvgUri } from "react-native-svg";
 import { RaceForm } from "../components/RaceForm";
@@ -37,10 +37,6 @@ const styles = StyleSheet.create({
   bgImage: {
     gap: scale(50),
     alignItems: "center",
-    paddingTop: Platform.select({
-      ios: 0,
-      default: StatusBar.currentHeight
-    }),
     padding: scale(20)
   }
 })
