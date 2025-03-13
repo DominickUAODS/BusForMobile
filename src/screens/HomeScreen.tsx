@@ -20,7 +20,6 @@ function HomeScreen({ navigation }: any) {
       />
       <RaceForm orientation={(width > height) ? "landscape" : "portrait"} />
     </ImageBackground>
-    <StatusBar backgroundColor="rgb(249, 37, 63)" />
   </SafeAreaView>
 }
 

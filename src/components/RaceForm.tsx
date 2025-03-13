@@ -64,7 +64,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                     searchPlaceholder="Пункт відправлення"
                     renderLeftIcon={() => <MaterialIcons name="logout" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerHorizontal}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerHorizontal]}
                 />
                 <Dropdown
                     data={cities}
@@ -79,7 +79,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                     searchPlaceholder="Пункт прибуття"
                     renderLeftIcon={() => <MaterialIcons name="login" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerHorizontal}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerHorizontal]}
                 />
                 <TouchableOpacity
                     onPress={() => setDatePickerVisibility(true)}
@@ -95,7 +95,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                         placeholder="Пасажири"
                         keyboardType="numeric"
                         value={passengers.toString()}
-                        onChangeText={(text) => setPassengers(Math.abs(parseInt(text) ?? 0))}
+                        onChangeText={(text) => setPassengers(Math.abs(isNaN(parseInt(text)) ? 0 : parseInt(text)))}
                     />
                 </View>
             </View>
@@ -131,7 +131,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                     searchPlaceholder="Пункт відправлення"
                     renderLeftIcon={() => <MaterialIcons name="logout" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerVertical}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerVertical]}
                 />
                 <Dropdown
                     data={cities}
@@ -146,7 +146,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                     searchPlaceholder="Пункт прибуття"
                     renderLeftIcon={() => <MaterialIcons name="login" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerVertical}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerVertical]}
                 />
             </View>
             <View style={[styles.inputContainer, styles.inputContainerVertical]}>
@@ -164,7 +164,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                         placeholder="Пасажири"
                         keyboardType="numeric"
                         value={passengers.toString()}
-                        onChangeText={(text) => setPassengers(Math.abs(parseInt(text) ?? 0))}
+                        onChangeText={(text) => setPassengers(Math.abs(isNaN(parseInt(text)) ? 0 : parseInt(text)))}
                     />
                 </View>
             </View>
@@ -231,6 +231,9 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         color: "gray"
+    },
+    dropdownContainer: {
+        borderRadius: scale(10),
     },
     dropdownContainerHorizontal: {
         width: scale(500)

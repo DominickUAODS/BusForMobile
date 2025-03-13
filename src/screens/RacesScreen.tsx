@@ -7,6 +7,7 @@ import Page from "../interfaces/Page";
 import { API_SERVER } from "@env";
 import City from "../interfaces/City";
 import CustomLoading from "../components/CustomLoading";
+import { useNavigation } from "@react-navigation/native";
 
 interface RouteParams {
     city_from: number,
@@ -27,6 +28,7 @@ function RacesScreen({ route }: any): React.ReactElement {
     const [cityFrom, setCityFrom] = useState<City>();
     const [cityTo, setCityTo] = useState<City>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
+    const navigation = useNavigation<any>();
 
     const fetchCities = async () => {
         setIsLoading(true);
@@ -49,6 +51,7 @@ function RacesScreen({ route }: any): React.ReactElement {
             }
             const city_to_as_obj: City = await response.json();
             setCityTo(city_to_as_obj);
+            navigation.setOptions({ title: `${city_to_as_obj.name_ua} - ${city_to_as_obj.name_ua}` })
         } catch (error) {
             console.error(error);
         } finally {

@@ -16,7 +16,13 @@ const routeIcons: any = {
 const Tab = createBottomTabNavigator();
 const Stack = createNativeStackNavigator();
 const SearchScreens = () => (
-  <Stack.Navigator>
+  <Stack.Navigator
+    screenOptions={({}) => ({
+      headerStyle: {
+        backgroundColor: "rgb(249, 37, 63)",
+      },
+      headerTintColor: "white"
+    })}>
     <Stack.Screen name="Home" component={HomeScreen} options={{ headerShown: false }} />
     <Stack.Screen name="Races" component={RacesScreen} options={{ headerTitle: "Рейси" }} />
   </Stack.Navigator>
@@ -30,6 +36,7 @@ function App() {
           tabBarIcon: ({ color, size }) => {
             return <MaterialIcons name={routeIcons[route.name] ?? "question-mark"} size={size} color={color} />
           },
+          statusBarBackgroundColor: "rgb(249, 37, 63)",
           tabBarActiveTintColor: "rgb(249, 37, 63)",
           tabBarInactiveTintColor: "gray",
           headerShown: false
