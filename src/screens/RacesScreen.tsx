@@ -16,7 +16,7 @@ interface RouteParams {
     passengers: number
 }
 
-function RacesScreen({ route }: any): React.ReactElement {
+function RacesScreen({ navigation, route }: any): React.ReactElement {
     const { city_from, city_to, date, passengers }: RouteParams = route.params;
     
     const date_start: Date = new Date(date);
@@ -28,7 +28,6 @@ function RacesScreen({ route }: any): React.ReactElement {
     const [cityFrom, setCityFrom] = useState<City>();
     const [cityTo, setCityTo] = useState<City>();
     const [isLoading, setIsLoading] = useState<boolean>(false);
-    const navigation = useNavigation<any>();
 
     const fetchCities = async () => {
         setIsLoading(true);
@@ -43,7 +42,7 @@ function RacesScreen({ route }: any): React.ReactElement {
         } catch (error) {
             console.error(error);
         }
-        try{
+        try {
             const response: Response = await fetch(`${API_SERVER}/cities/${city_to}`);
             if (!response.ok) {
                 const error: Error = await response.json();
@@ -51,7 +50,6 @@ function RacesScreen({ route }: any): React.ReactElement {
             }
             const city_to_as_obj: City = await response.json();
             setCityTo(city_to_as_obj);
-            navigation.setOptions({ title: `${city_to_as_obj.name_ua} - ${city_to_as_obj.name_ua}` })
         } catch (error) {
             console.error(error);
         } finally {
@@ -85,7 +83,13 @@ function RacesScreen({ route }: any): React.ReactElement {
     useEffect(() => {
         fetchCities();
         fetchRaces();
-    }, [route.params])
+    }, [])
+
+    useEffect(() => {
+        if (cityTo) {
+            navigation.setOptions({ headerTitle: `${cityFrom?.name_ua} - ${cityTo.name_ua}` });
+        }
+    }, [cityFrom, cityTo]);
 
     return (
         <View style={styles.container}>

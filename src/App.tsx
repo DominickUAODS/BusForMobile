@@ -33,12 +33,11 @@ function App() {
     <NavigationContainer>
       <Tab.Navigator
         screenOptions={({route}) => ({
+          statusBarBackgroundColor: "rgb(249, 37, 63)",
           tabBarIcon: ({ color, size }) => {
             return <MaterialIcons name={routeIcons[route.name] ?? "question-mark"} size={size} color={color} />
           },
-          statusBarBackgroundColor: "rgb(249, 37, 63)",
           tabBarActiveTintColor: "rgb(249, 37, 63)",
-          tabBarInactiveTintColor: "gray",
           headerShown: false
         })}
       >
