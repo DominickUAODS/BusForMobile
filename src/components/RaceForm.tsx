@@ -24,11 +24,10 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
     const navigation = useNavigation<any>();
 
     const onSubmit = () => {
-        navigation.navigate("Races", {city_from, city_to, date, passengers});
+        navigation.navigate("Races", {city_from, city_to, date: date.toISOString(), passengers});
     }
 
     const fetchCities = async () => {
-        console.log(API_SERVER)
         try {
 			const response: Response = await fetch(`${API_SERVER}/cities/?page_size=100`);
 			if (!response.ok) {
@@ -37,8 +36,8 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
 			}
 			const page: Page<City> = await response.json();
 			const newCities: City[] = page.results;
-			setCityFrom(newCities.find(city => city.name_ua === "Київ")?.id ?? 0);
-			setCityTo(newCities.find(city => city.name_ua === "Одеса")?.id ?? 0);
+			setCityFrom(newCities.find(city => city.name_ua === "Одеса")?.id ?? 0);
+			setCityTo(newCities.find(city => city.name_ua === "Львів")?.id ?? 0);
 			setCities(newCities);
 		} catch (error) {
 			console.error(error);
@@ -54,31 +53,33 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
             <View style={[styles.inputContainer, styles.inputContainerHorizontal]}>
                 <Dropdown
                     data={cities}
+                    value={city_from}
                     onChange={(item) => {setCityFrom(item.id)}}
                     labelField="name_ua"
                     valueField="id"
                     placeholder="Звідки"
                     placeholderStyle={styles.placeholder}
                     search={true}
-                    searchField="name"
+                    searchField="name_ua"
                     searchPlaceholder="Пункт відправлення"
                     renderLeftIcon={() => <MaterialIcons name="logout" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerHorizontal}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerHorizontal]}
                 />
                 <Dropdown
                     data={cities}
+                    value={city_to}
                     onChange={(item) => {setCityTo(item.id)}}
                     labelField="name_ua"
                     valueField="id"
                     placeholder="Куди"
                     placeholderStyle={styles.placeholder}
                     search={true}
-                    searchField="name"
+                    searchField="name_ua"
                     searchPlaceholder="Пункт прибуття"
                     renderLeftIcon={() => <MaterialIcons name="login" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerHorizontal}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerHorizontal]}
                 />
                 <TouchableOpacity
                     onPress={() => setDatePickerVisibility(true)}
@@ -94,7 +95,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                         placeholder="Пасажири"
                         keyboardType="numeric"
                         value={passengers.toString()}
-                        onChangeText={(text) => setPassengers(Math.abs(parseInt(text) ?? 0))}
+                        onChangeText={(text) => setPassengers(Math.abs(isNaN(parseInt(text)) ? 0 : parseInt(text)))}
                     />
                 </View>
             </View>
@@ -119,31 +120,33 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
             <View style={[styles.inputContainer, styles.inputContainerVertical, styles.inputContainerPlaceVertical]}>
                 <Dropdown
                     data={cities}
+                    value={city_from}
                     onChange={(item) => {setCityFrom(item.id)}}
                     labelField="name_ua"
                     valueField="id"
                     placeholder="Звідки"
                     placeholderStyle={styles.placeholder}
                     search={true}
-                    searchField="name"
+                    searchField="name_ua"
                     searchPlaceholder="Пункт відправлення"
                     renderLeftIcon={() => <MaterialIcons name="logout" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerVertical}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerVertical]}
                 />
                 <Dropdown
                     data={cities}
+                    value={city_to}
                     onChange={(item) => {setCityTo(item.id)}}
                     labelField="name_ua"
                     valueField="id"
                     placeholder="Куди"
                     placeholderStyle={styles.placeholder}
                     search={true}
-                    searchField="name"
+                    searchField="name_ua"
                     searchPlaceholder="Пункт прибуття"
                     renderLeftIcon={() => <MaterialIcons name="login" color="gray" size={scale(15)} />}
                     style={styles.input}
-                    containerStyle={styles.dropdownContainerVertical}
+                    containerStyle={[styles.dropdownContainer, styles.dropdownContainerVertical]}
                 />
             </View>
             <View style={[styles.inputContainer, styles.inputContainerVertical]}>
@@ -161,7 +164,7 @@ function RaceForm({ orientation }: RaceFormProps): React.ReactElement {
                         placeholder="Пасажири"
                         keyboardType="numeric"
                         value={passengers.toString()}
-                        onChangeText={(text) => setPassengers(Math.abs(parseInt(text) ?? 0))}
+                        onChangeText={(text) => setPassengers(Math.abs(isNaN(parseInt(text)) ? 0 : parseInt(text)))}
                     />
                 </View>
             </View>
@@ -228,6 +231,9 @@ const styles = StyleSheet.create({
     },
     placeholder: {
         color: "gray"
+    },
+    dropdownContainer: {
+        borderRadius: scale(10),
     },
     dropdownContainerHorizontal: {
         width: scale(500)

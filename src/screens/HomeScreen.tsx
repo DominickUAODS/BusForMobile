@@ -1,4 +1,4 @@
-import { SafeAreaView, View, StyleSheet, Platform, StatusBar, useWindowDimensions, ImageBackground } from "react-native";
+import { SafeAreaView, View, StyleSheet, Platform, useWindowDimensions, ImageBackground } from "react-native";
 import { scale } from "react-native-size-matters";
 import { SvgUri } from "react-native-svg";
 import { RaceForm } from "../components/RaceForm";
@@ -20,7 +20,6 @@ function HomeScreen({ navigation }: any) {
       />
       <RaceForm orientation={(width > height) ? "landscape" : "portrait"} />
     </ImageBackground>
-    <StatusBar backgroundColor="rgb(249, 37, 63)" />
   </SafeAreaView>
 }
 
@@ -29,20 +28,15 @@ export { HomeScreen };
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    justifyContent: "center",
-    backgroundColor: "lightblue"
+    justifyContent: "center"
   },
   overlay: {
     ...StyleSheet.absoluteFillObject,
     backgroundColor: "rgba(0, 0, 0, 0.4)"
   },
   bgImage: {
-    gap: 50,
+    gap: scale(50),
     alignItems: "center",
-    paddingTop: Platform.select({
-      ios: 0,
-      default: StatusBar.currentHeight
-    }),
     padding: scale(20)
   }
 })
